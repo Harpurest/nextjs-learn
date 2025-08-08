@@ -6,14 +6,14 @@ import {
 } from '@heroicons/react/24/outline';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { Button } from './button';
-import { login } from '@/app/lib/actions';
+import { signup } from '@/app/lib/actions';
 
-export default function LoginForm() {
+export default function SignupForm() {
   return (
     <form className="space-y-3">
       <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
         <h1 className={`${lusitana.className} mb-3 text-2xl`}>
-          Please log in to continue.
+          Sign up if you are a new user
         </h1>
         <div className="w-full">
           <div>
@@ -56,8 +56,8 @@ export default function LoginForm() {
             </div>
           </div>
         </div>
-        <Button className="mt-4 w-full" formAction={login}>
-          Log in <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
+        <Button className="mt-4 w-full" formAction={signup}>
+          Sign up <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
         </Button>
       </div>
     </form>

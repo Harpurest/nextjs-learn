@@ -6,6 +6,7 @@ import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import postgres from 'postgres';
+import { createClient } from '@/utils/supabase/server'
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
@@ -106,6 +107,7 @@ export async function deleteInvoice(id: string) {
   revalidatePath('/dashboard/invoices');
 }
 
+/*
 export async function authenticate(
   prevState: string | undefined,
   formData: FormData,
@@ -123,4 +125,45 @@ export async function authenticate(
     }
     throw error;
   }
+}
+*/
+
+export async function login(formData: FormData) {
+  const supabase = await createClient()
+
+  // type-casting here for convenience
+  // in practice, you should validate your inputs
+  const data = {
+    email: formData.get('email') as string,
+    password: formData.get('password') as string,
+  }
+
+  const { error } = await supabase.auth.signInWithPassword(data)
+
+  if (error) {
+    redirect('/error')
+  }
+
+  revalidatePath('/', 'layout')
+  redirect('/')
+}
+
+export async function signup(formData: FormData) {
+  const supabase = await createClient()
+
+  // type-casting here for convenience
+  // in practice, you should validate your inputs
+  const data = {
+    email: formData.get('email') as string,
+    password: formData.get('password') as string,
+  }
+
+  const { error } = await supabase.auth.signUp(data)
+
+  if (error) {
+    redirect('/error')
+  }
+
+  revalidatePath('/', 'layout');
+  redirect('/');
 }
