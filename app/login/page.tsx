@@ -1,6 +1,7 @@
 import AcmeLogo from '@/app/ui/acme-logo';
 import LoginForm from '@/app/ui/login-form';
 import { Suspense } from 'react';
+import LoginGithubButton from '../ui/login-github-button';
  
 export default function LoginPage() {
   return (
@@ -13,6 +14,9 @@ export default function LoginPage() {
         </div>
         <Suspense>
           <LoginForm />
+        </Suspense>
+        <Suspense>
+          <LoginGithubButton />
         </Suspense>
       </div>
     </main>

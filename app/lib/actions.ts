@@ -1,7 +1,7 @@
 'use server';
 
-import { signIn } from '@/auth';
-import { AuthError } from 'next-auth';
+// import { signIn } from '@/auth';
+// import { AuthError } from 'next-auth';
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
@@ -164,6 +164,28 @@ export async function signup(formData: FormData) {
     redirect('/error')
   }
 
+  revalidatePath('/', 'layout');
+  redirect('/');
+}
+
+export async function loginGithub(formData: FormData) {
+  const supabase = await createClient();
+  const provider = 'github';
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider,
+    options: {
+      redirectTo: 'http://localhost:3000/auth/callback',
+    },
+  })
+
+  if (data.url) {
+    redirect(data.url) // use the redirect API for your server framework
+  }
+}
+
+export async function signOut() {
+  const supabase = await createClient();
+  const {error} = await supabase.auth.signOut();
   revalidatePath('/', 'layout');
   redirect('/');
 }
